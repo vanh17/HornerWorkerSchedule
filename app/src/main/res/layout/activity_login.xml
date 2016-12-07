@@ -28,23 +28,6 @@
             android:textAlignment="center"
             android:textColor = "#ff7aff24"
             android:textSize = "35dp" />
-
-        <EditText
-            android:layout_width = "wrap_content"
-            android:layout_height = "wrap_content"
-            android:id = "@+id/username"
-            android:hint = "Username"
-            android:text = "vanh17"
-            android:focusable = "true"
-            android:textColorHighlight = "#ff7eff15"
-            android:textColorHint = "#ffff25e6"
-            android:layout_marginTop = "46dp"
-            android:layout_below = "@+id/imageView"
-            android:layout_alignParentLeft = "true"
-            android:layout_alignParentStart = "true"
-            android:layout_alignParentRight = "true"
-            android:layout_alignParentEnd = "true" />
-
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,18 +37,31 @@
             android:layout_centerHorizontal="true" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width = "160dp"
+            android:layout_height = "wrap_content"
+            android:id = "@+id/username"
+            android:hint = "Username"
+            android:text = "vanh17"
+            android:focusable = "true"
+            android:textColorHighlight = "#ff7eff15"
+            android:textColorHint = "#ffff25e6"
+            android:layout_marginTop = "20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below = "@+id/imageView"/>
+
+
+
+        <EditText
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:ems="10"
             android:id="@+id/password"
             android:layout_below="@+id/username"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignRight="@+id/username"
-            android:layout_alignEnd="@+id/username"
+            android:layout_centerHorizontal="true"
+            android:textColorHighlight="@color/colorPrimary"
             android:textColorHint="#ffff299f"
-            android:text="vanh17Pass"
+            android:text="vanh17pass"
             android:hint="Password" />
 
         <Button
@@ -74,19 +70,18 @@
             android:text="Login"
             android:id="@+id/login"
             android:layout_below="@+id/password"
-            android:layout_alignParentBottom="true"
-            android:layout_toLeftOf="@+id/textview"
-            android:layout_toStartOf="@+id/textview" />
+            android:textColorHighlight="@color/colorPrimary"
+            android:layout_centerHorizontal="true"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sign Up"
-            android:id="@+id/signup"
-            android:layout_below="@+id/password"
-            android:layout_alignParentBottom="true"
-            android:layout_toRightOf="@+id/textview"
-            android:layout_toEndOf="@+id/textview" />
+        <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Sign Up"-->
+            <!--android:id="@+id/signup"-->
+            <!--android:layout_below="@+id/password"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_toRightOf="@+id/textview"-->
+            <!--android:layout_toEndOf="@+id/textview" />-->
 
     </RelativeLayout>
 </ScrollView>

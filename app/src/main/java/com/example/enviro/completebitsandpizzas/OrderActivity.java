@@ -2,7 +2,10 @@ package com.example.enviro.completebitsandpizzas;
 
 import android.app.Activity;
 import android.app.TimePickerDialog;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.app.ActionBar;
 
@@ -28,13 +31,15 @@ public class OrderActivity extends Activity {
     private TextView tvDisplayDate;
     private TextView tvDisplayTime;
     private Button btnChangeDate;
+    private static String WORKER_ID = "WORKER_ID";
 
     private int year;
     private int month;
     private int day;
     private int hour;
     private int minute;
-    private int iD = 0;
+    private int iD;
+
 
     static final int DATE_DIALOG_ID = 999;
     static final int TIME_DIALOG_ID = 888;
@@ -43,11 +48,23 @@ public class OrderActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
+        if (savedInstanceState != null) {
+            iD = savedInstanceState.getInt(WORKER_ID);
+        } else {
+            iD = getIntent().getIntExtra(WORKER_ID, -2);
+        }
+        Log.i("Order", Integer.toString(iD));
         ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(false);
 
         setCurrentDateOnView();
         addListener();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(WORKER_ID, iD);
     }
 
     // display current date
@@ -172,19 +189,20 @@ public class OrderActivity extends Activity {
     };
 
     public void shiftTrader() {
-        int size = Shift.shifts.length;
+        SQLiteDatabase db = (new HornerWorkerDatabaseHelper(this)).getReadableDatabase();
+        ContentValues shift = new ContentValues();
+        shift.put("CURRENT", -1);
+        int row = db.update("SHIFTS", shift, "ORIGINAL = ? AND YEAR = ? AND MONTH = ? AND DATE = ? AND HOUR = ? AND MINUTE = ?",
+                new String[] {Integer.toString(iD), Integer.toString(year-1900), Integer.toString(month), Integer.toString(day), Integer.toString(hour), Integer.toString(minute)});
         Date date = new Date(year - 1900, month, day, hour, minute);
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm");
         String dateS = df.format(date);
-        for (int i = 0; i < size; i++) {
-            Shift item = Shift.shifts[i];
-            if ((item.dateToString().equals(dateS)) && iD == item.getCurrentWorker()) {
-                item.setCurrentWorker(-1);
-                Log.i("condition", "*****************TRUEEEEEE**********");
-                Toast.makeText(getApplicationContext(), "Successfully Giving", Toast.LENGTH_SHORT).show();
-                onBackPressed();
-                return;
-            }
+        if (row == 1) {
+            Toast.makeText(getApplicationContext(), "Successfully Giving\n at " + dateS, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra(WORKER_ID, iD);
+            startActivity(intent);
+            return;
         }
         Toast.makeText(getApplicationContext(), "No Shift Found", Toast.LENGTH_SHORT).show();
     }

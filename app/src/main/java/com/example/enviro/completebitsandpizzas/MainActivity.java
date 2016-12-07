@@ -18,7 +18,8 @@ import android.app.FragmentTransaction;
 import android.app.FragmentManager;
 
 public class MainActivity extends Activity {
-
+    private static String WORKER_ID = "WORKER_ID";
+    private int worker_id;
     private ShareActionProvider shareActionProvider;
     private int currentPosition = 0;
     private String[] titles;
@@ -31,6 +32,10 @@ public class MainActivity extends Activity {
             selectItem(position);
         }
     };
+
+    public int getWorker_id() {
+        return worker_id;
+    }
 
     private void selectItem(int position) {
         currentPosition = position;
@@ -80,9 +85,11 @@ public class MainActivity extends Activity {
         drawerList.setOnItemClickListener(new DrawerItemClickListener());
         if (savedInstanceState != null) {
             currentPosition = savedInstanceState.getInt("position");
+            worker_id = savedInstanceState.getInt(WORKER_ID);
             setActionBarTitle(currentPosition);
 
         } else {
+            worker_id = getIntent().getIntExtra(WORKER_ID, -2);
             selectItem(0);
         }
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open_drawer, R.string.close_drawer) {
@@ -116,7 +123,8 @@ public class MainActivity extends Activity {
                         }
                         if (fragment instanceof ReceivedFragment) {
                             currentPosition = 3;
-                        }                        setActionBarTitle(currentPosition);
+                        }
+                        setActionBarTitle(currentPosition);
                         drawerList.setItemChecked(currentPosition, true);
 
                     }
@@ -128,6 +136,7 @@ public class MainActivity extends Activity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("position", currentPosition);
+        outState.putInt(WORKER_ID, worker_id);
     }
 
     @Override
@@ -174,9 +183,12 @@ public class MainActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.action_create_order:
                 Intent intent = new Intent(this, OrderActivity.class);
+                intent.putExtra(WORKER_ID, worker_id);
                 startActivity(intent);
                 return true;
-            case R.id.action_settings:
+            case R.id.action_logout:
+                Intent logout = new Intent(this, LoginActivity.class);
+                startActivity(logout);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

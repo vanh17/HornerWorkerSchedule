@@ -1,8 +1,10 @@
 package com.example.enviro.completebitsandpizzas;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +18,7 @@ import java.util.Date;
  */
 public class TopFragment extends Fragment {
 
-    private  int iD = 0;
+    private  int iD;
 
     public TopFragment() {
         // Required empty public constructor
@@ -34,7 +36,9 @@ public class TopFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        MainActivity activity = (MainActivity) getActivity();
+        iD = activity.getWorker_id();
+        Log.i("TOP", Integer.toString(iD));
         View view = getView();
         if (view != null) {
             TextView shift = (TextView) view.findViewById(R.id.shift);
